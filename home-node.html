@@ -1,0 +1,36 @@
+<script type="text/javascript">
+    RED.nodes.registerType('home-node', {
+        category: 'function',
+        color: '#a6bbcf',
+        defaults: {
+            name: { value: "" },
+            addr: { value: "", required: true },
+            value: { value: "", required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "file.png",
+        label: function () {
+            return this.name || "home-node";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="home-node">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-addr"><i class="fa fa-tag"></i> Addr</label>
+        <input type="text" id="node-input-addr">
+    </div>
+    <div class="form-row">
+        <label for="node-input-value"><i class="fa fa-tag"></i> Value</label>
+        <input type="text" id="node-input-value">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="home-node">
+    <p>A node</p>
+</script>

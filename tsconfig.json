@@ -1,0 +1,10 @@
+{
+    "files": [
+        "home-node.ts",
+        
+    ],
+    "exclude": ["node_modules"],
+    "esModuleInterop": true,
+    "target": "es2015",
+    "preserveConstEnums": true,
+}
