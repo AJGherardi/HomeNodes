@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    RED.nodes.registerType('home-node', {
+    RED.nodes.registerType('set-state', {
         category: 'function',
-        color: '#a6bbcf',
+        color: '#C0C0C0',
         defaults: {
             name: { value: "" },
             addr: { value: "", required: true },
@@ -9,14 +9,30 @@
         },
         inputs: 1,
         outputs: 1,
-        icon: "file.png",
+        icon: "font-awesome/fa-arrow-right",
         label: function () {
-            return this.name || "home-node";
+            return this.name || "set-state";
+        }
+    });
+
+    RED.nodes.registerType('scene-recall', {
+        category: 'function',
+        color: '#C0C0C0',
+        defaults: {
+            name: { value: "" },
+            addr: { value: "", required: true },
+            sceneNumber: { value: "", required: true }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-arrow-right",
+        label: function () {
+            return this.name || "scene-recall";
         }
     });
 </script>
 
-<script type="text/html" data-template-name="home-node">
+<script type="text/html" data-template-name="set-state">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -31,6 +47,25 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="home-node">
-    <p>A node</p>
+<script type="text/html" data-help-name="set-state">
+    <p>A node that sets the state of the element with the given address</p>
+</script>
+
+<script type="text/html" data-template-name="scene-recall">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-addr"><i class="fa fa-tag"></i> Addr</label>
+        <input type="text" id="node-input-addr">
+    </div>
+    <div class="form-row">
+        <label for="node-input-sceneNumber"><i class="fa fa-tag"></i> SceneNumber</label>
+        <input type="text" id="node-input-sceneNumber">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="scene-recall">
+    <p>A node that recalls the scene for the group with the given address</p>
 </script>
