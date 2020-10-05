@@ -30,6 +30,30 @@
             return this.name || "scene-recall";
         }
     });
+    RED.nodes.registerType('get-events', {
+        category: 'imput',
+        color: '#C0C0C0',
+        defaults: {
+            name: { value: "" },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: "font-awesome/fa-arrow-right",
+        label: function () {
+            return this.name || "get-events";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="get-events">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="get-events">
+    <p>A node that sends a msg with the address of the device that raised the event</p>
 </script>
 
 <script type="text/html" data-template-name="set-state">

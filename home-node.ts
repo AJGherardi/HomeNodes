@@ -1,6 +1,7 @@
-import fetch from 'cross-fetch';
-import { HttpLink, execute, gql } from "@apollo/client";
+import { execute, gql } from "@apollo/client";
+import { WebSocketLink } from "@apollo/client/link/ws";
 import { Node, NodeDef, NodeInitializer } from "node-red";
+import WebSocket = require("ws")
 
 const SET_STATE = gql`
     mutation SetState($addr: String!,$value: String!) {
@@ -14,8 +15,19 @@ const SCENE_RECALL = gql`
     }
 `
 
-const uri = 'http://localhost:8080/graphql';
-const link = new HttpLink({ uri, fetch: fetch });
+const GET_EVENTS = gql`
+    subscription GetEvents {
+        getEvents
+    }
+`
+
+const link = new WebSocketLink({
+    uri: 'ws://localhost:8080/graphql',
+    options: {
+        connectionParams: { "webKey": "hOKv/t/RS1TWwWEIeheP1A==" }
+    },
+    webSocketImpl: WebSocket
+});
 
 interface SetStateNodeDef extends NodeDef { addr: String, value: String }
 interface SceneRecallNodeDef extends NodeDef { addr: String, sceneNumber: String }
@@ -65,7 +77,24 @@ const nodeInit: NodeInitializer = (RED): void => {
         });
     }
 
+    function GetEventsNode(this: Node, config: SceneRecallNodeDef) {
+        RED.nodes.createNode(this, config);
+        const operation = {
+            query: GET_EVENTS,
+        };
+
+        execute(link, operation).subscribe({
+            next: data => {
+                var msg = { payload: "" };
+                msg.payload = data
+                this.send(msg)
+            },
+            complete: () => console.log(`complete`),
+        })
+    }
+
     RED.nodes.registerType("set-state", SetStateNode);
     RED.nodes.registerType("scene-recall", SceneRecallNode);
+    RED.nodes.registerType("get-events", GetEventsNode);
 }
 export = nodeInit
