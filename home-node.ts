@@ -21,18 +21,24 @@ const GET_EVENTS = gql`
     }
 `
 
-const link = new WebSocketLink({
-    uri: 'ws://localhost:8080/graphql',
-    options: {
-        connectionParams: { "webKey": "hOKv/t/RS1TWwWEIeheP1A==" }
-    },
-    webSocketImpl: WebSocket
-});
-
-interface SetStateNodeDef extends NodeDef { addr: String, value: String }
-interface SceneRecallNodeDef extends NodeDef { addr: String, sceneNumber: String }
+interface SetStateNodeDef extends NodeDef { addr: String, value: String, server: string }
+interface SceneRecallNodeDef extends NodeDef { addr: String, sceneNumber: String, server: string }
+interface GetEventsNodeDef extends NodeDef { server: string }
+interface HubConfigNodeDef extends NodeDef { uri: string, webKey: String }
 
 const nodeInit: NodeInitializer = (RED): void => {
+    function HubConfigNode(this: Node, config: HubConfigNodeDef) {
+        RED.nodes.createNode(this, config);
+        this.context().set("link", new WebSocketLink({
+            uri: config.uri,
+            options: {
+                connectionParams: { "webKey": config.webKey }
+            },
+            webSocketImpl: WebSocket
+        })
+        )
+    }
+
     function SceneRecallNode(this: Node, config: SceneRecallNodeDef) {
         RED.nodes.createNode(this, config);
         const operation = {
@@ -42,7 +48,7 @@ const nodeInit: NodeInitializer = (RED): void => {
                 sceneNumber: config.sceneNumber
             },
         };
-
+        const link: any = RED.nodes.getNode(config.server).context().get("link")
         this.on("input", (msg, send, done) => {
             execute(link, operation).subscribe({
                 next: data => {
@@ -64,7 +70,7 @@ const nodeInit: NodeInitializer = (RED): void => {
                 value: config.value
             },
         };
-
+        const link: any = RED.nodes.getNode(config.server).context().get("link")
         this.on("input", (msg, send, done) => {
             execute(link, operation).subscribe({
                 next: data => {
@@ -77,12 +83,12 @@ const nodeInit: NodeInitializer = (RED): void => {
         });
     }
 
-    function GetEventsNode(this: Node, config: SceneRecallNodeDef) {
+    function GetEventsNode(this: Node, config: GetEventsNodeDef) {
         RED.nodes.createNode(this, config);
         const operation = {
             query: GET_EVENTS,
         };
-
+        const link: any = RED.nodes.getNode(config.server).context().get("link")
         execute(link, operation).subscribe({
             next: data => {
                 var msg = { payload: "" };
@@ -93,6 +99,7 @@ const nodeInit: NodeInitializer = (RED): void => {
         })
     }
 
+    RED.nodes.registerType("hub-config", HubConfigNode);
     RED.nodes.registerType("set-state", SetStateNode);
     RED.nodes.registerType("scene-recall", SceneRecallNode);
     RED.nodes.registerType("get-events", GetEventsNode);

@@ -5,7 +5,8 @@
         defaults: {
             name: { value: "" },
             addr: { value: "", required: true },
-            value: { value: "", required: true }
+            value: { value: "", required: true },
+            server: {value:"", type:"hub-config"},
         },
         inputs: 1,
         outputs: 1,
@@ -21,7 +22,8 @@
         defaults: {
             name: { value: "" },
             addr: { value: "", required: true },
-            sceneNumber: { value: "", required: true }
+            sceneNumber: { value: "", required: true },
+            server: {value:"", type:"hub-config"},
         },
         inputs: 1,
         outputs: 1,
@@ -35,6 +37,7 @@
         color: '#C0C0C0',
         defaults: {
             name: { value: "" },
+            server: {value:"", type:"hub-config"},
         },
         inputs: 0,
         outputs: 1,
@@ -43,12 +46,37 @@
             return this.name || "get-events";
         }
     });
+    RED.nodes.registerType('hub-config', {
+        category: 'config',
+        defaults: {
+            webKey: { value: "" },
+            uri: { value: "" },
+        },
+        label: function () {
+            return "hub-config";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="hub-config">
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-bookmark"></i> WebKey</label>
+        <input type="text" id="node-config-input-webKey">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-uri"><i class="fa fa-bookmark"></i> URI</label>
+        <input type="text" id="node-config-input-uri">
+    </div>
 </script>
 
 <script type="text/html" data-template-name="get-events">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Hub</label>
+        <input type="hub-config" id="node-input-server">
     </div>
 </script>
 
@@ -69,6 +97,10 @@
         <label for="node-input-value"><i class="fa fa-tag"></i> Value</label>
         <input type="text" id="node-input-value">
     </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Hub</label>
+        <input type="hub-config" id="node-input-server">
+    </div>
 </script>
 
 <script type="text/html" data-help-name="set-state">
@@ -87,6 +119,10 @@
     <div class="form-row">
         <label for="node-input-sceneNumber"><i class="fa fa-tag"></i> SceneNumber</label>
         <input type="text" id="node-input-sceneNumber">
+    </div>
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-tag"></i> Hub</label>
+        <input type="hub-config" id="node-input-server">
     </div>
 </script>
 
