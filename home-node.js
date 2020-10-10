@@ -15,7 +15,8 @@ var nodeInit = function (RED) {
         this.context().set("link", new ws_1.WebSocketLink({
             uri: config.uri,
             options: {
-                connectionParams: { "webKey": config.webKey }
+                connectionParams: { "webKey": config.webKey },
+                reconnect: true
             },
             webSocketImpl: WebSocket
         }));
@@ -85,5 +86,3 @@ var nodeInit = function (RED) {
 };
 var templateObject_1, templateObject_2, templateObject_3;
 module.exports = nodeInit;
-// "hOKv/t/RS1TWwWEIeheP1A=="
-// ws://localhost:8080/graphql
