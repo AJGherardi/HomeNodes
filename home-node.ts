@@ -32,7 +32,8 @@ const nodeInit: NodeInitializer = (RED): void => {
         this.context().set("link", new WebSocketLink({
             uri: config.uri,
             options: {
-                connectionParams: { "webKey": config.webKey }
+                connectionParams: { "webKey": config.webKey },
+                reconnect: true 
             },
             webSocketImpl: WebSocket
         })
