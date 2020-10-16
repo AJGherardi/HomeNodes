@@ -15,7 +15,7 @@ jobs:
         name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=ghcr.io/ajgherardi/hub
+          DOCKER_IMAGE=ghcr.io/ajgherardi/node-red
           VERSION=$(echo ${GITHUB_REF#refs/heads/} | sed -r 's#/+#-#g')
           TAGS="${DOCKER_IMAGE}:${VERSION}"       
           
@@ -42,5 +42,5 @@ jobs:
           platforms: linux/amd64, linux/arm64
           push: true
           tags: |
-            ghcr.io/ajgherardi/hub:latest
+            ghcr.io/ajgherardi/node-red:latest
             ${{ steps.prep.outputs.tags }}
