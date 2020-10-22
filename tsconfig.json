@@ -4,6 +4,6 @@
     ],
     "exclude": ["node_modules"],
     "esModuleInterop": true,
-    "target": "es2015",
+    "target": "ES2015",
     "preserveConstEnums": true,
 }

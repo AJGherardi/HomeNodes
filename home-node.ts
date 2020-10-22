@@ -1,7 +1,8 @@
 import { execute, gql } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { Node, NodeDef, NodeInitializer } from "node-red";
-import WebSocket = require("ws")
+import WebSocket = require("ws");
+import AppWebSocket = require("./websocket");
 
 const SET_STATE = gql`
     mutation SetState($addr: String!,$value: String!) {
@@ -33,9 +34,9 @@ const nodeInit: NodeInitializer = (RED): void => {
             uri: config.uri,
             options: {
                 connectionParams: { "webKey": config.webKey },
-                reconnect: true 
+                reconnect: true
             },
-            webSocketImpl: WebSocket
+            webSocketImpl: AppWebSocket
         })
         )
     }
