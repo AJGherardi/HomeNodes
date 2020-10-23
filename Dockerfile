@@ -1,14 +1,14 @@
 FROM nodered/node-red:latest
 
-WORKDIR /app
+WORKDIR /src
 
-COPY ./ /app
+COPY ./ /src
 
 RUN npm install --unsafe-perm --no-update-notifier --no-fund --only=production
 
 WORKDIR /usr/src/node-red
 
-RUN npm install /app
+RUN npm install /src
 
 COPY /node-red/settings.js /home/settings.js
 
