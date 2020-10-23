@@ -10,6 +10,8 @@ WORKDIR /usr/src/node-red
 
 RUN npm install /app
 
+COPY /node-red/settings.js /home/settings.js
+
 USER root
 
-ENTRYPOINT ["npm", "start", "--cache", "/data/.npm", "--", "--settings", "/app/node-red/settings.js" , "--", "--userDir", "/data"]
+ENTRYPOINT ["npm", "start", "--cache", "/data/.npm", "--", "--settings", "/home/settings.js" , "--", "--userDir", "/data"]
