@@ -1,3 +1,5 @@
+const util = require('util');
+
 module.exports = {
     // the tcp port that the Node-RED web server is listening on
     uiPort: process.env.PORT || 1880,
@@ -127,12 +129,12 @@ module.exports = {
     //  cert: require("fs").readFileSync('cert.pem')
     //},
     ////https function:
-    https: function() {
-        // This function should return the options object, or a Promise
-        // that resolves to the options object
+    https: async function () {
+        const exec = util.promisify(require('child_process').exec);
+        await exec('openssl req -newkey rsa:2048 -new --subj "/C=US"  -nodes -x509 -days 3650 -keyout key.pem -out cert.pem');
         return {
-            key: require("fs").readFileSync('/app/key.pem'),
-            cert: require("fs").readFileSync('/app/cert.pem')
+            key: require("fs").readFileSync('key.pem'),
+            cert: require("fs").readFileSync('cert.pem')
         }
     },
 
