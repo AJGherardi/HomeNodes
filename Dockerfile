@@ -12,6 +12,4 @@ RUN npm install /src
 
 COPY /node-red/settings.js /home/settings.js
 
-USER root
-
 ENTRYPOINT ["npm", "start", "--cache", "/data/.npm", "--", "--settings", "/home/settings.js" , "--", "--userDir", "/data"]
